@@ -1,1 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>NIVEDU — See Your Child Understand, From the Very First Lesson</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink: #3b386c;
+    --ink-soft: #6a6795;
+    --bg-tint: #B7E0F1;
+    --bg-tint-soft: #EAF6FC;
+    --white: #FFFFFF;
+    --blue: #2E86C1;
+    --blue-dark: #1F5F91;
+    --coral: #F0693A;
+    --gold: #F0A93A;
+    --green: #2FAE7A;
+    --line: #E4ECF3;
+    --shadow-sm: 0 4px 18px rgba(59,56,108,0.08);
+    --shadow-md: 0 12px 32px rgba(59,56,108,0.12);
+    --radius: 20px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background: var(--white);
+    color: var(--ink);
+    font-family:'Inter', sans-serif;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{ font-family:'Poppins', sans-serif; color: var(--ink); letter-spacing:-0.01em; }
+  a{color:inherit;text-decoration:none;}
+  ul{list-style:none;}
+  img,canvas{max-width:100%;display:block;}
+  .wrap{ max-width:1200px; margin:0 auto; padding:0 32px; }
+  .eyebrow{
+    font-family:'Poppins',sans-serif; font-weight:700; font-size:0.72rem;
+    text-transform:uppercase; letter-spacing:0.14em; color: var(--blue);
+    display:inline-flex; align-items:center; gap:8px; margin-bottom:14px;
+  }
+  .eyebrow::before{ content:''; width:20px; height:2px; background: var(--coral); }
 
+  /* ---------- buttons ---------- */
+  .btn{
+    font-family:'Poppins', sans-serif; font-weight:600; font-size:0.92rem;
+    padding:14px 30px; border-radius:12px;
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    cursor:pointer; border:none; transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+  }
+  .btn-primary{ background: var(--coral); color:#fff; box-shadow: 0 10px 24px rgba(240,105,58,0.35); }
+  .btn-primary:hover{ background:#d9532a; transform: translateY(-2px); }
+  .btn-outline{ background: transparent; color: var(--ink); border:1.5px solid var(--line); }
+  .btn-outline:hover{ border-color: var(--ink); }
+  .btn-blue{ background: var(--blue); color:#fff; box-shadow:0 10px 24px rgba(46,134,193,0.3); }
+  .btn-blue:hover{ background: var(--blue-dark); transform: translateY(-2px); }
+
+  /* ---------- header ---------- */
+  header{ position:sticky; top:0; z-index:60; background: rgba(255,255,255,0.92); backdrop-filter: blur(10px); border-bottom:1px solid var(--line); }
+  nav{ display:flex; align-items:center; justify-content:space-between; padding:16px 0; }
+  .logo{ font-family:'Poppins',sans-serif; font-weight:800; font-size:1.3rem; display:flex; align-items:center; gap:8px; }
+  .logo .dot{ width:10px; height:10px; border-radius:50%; background: var(--coral); }
+  .nav-links{ display:flex; gap:32px; align-items:center; }
+  .nav-links a{ font-family:'Poppins',sans-serif; font-size:0.88rem; font-weight:600; color: var(--ink-soft); }
+  .nav-links a:hover{ color: var(--ink); }
+  .nav-cta{ display:flex; gap:12px; align-items:center; }
+  .nav-cta .btn{ padding:10px 22px; font-size:0.85rem; }
+
+  .hamburger{ display:none; flex-direction:column; gap:5px; width:34px; height:34px; align-items:center; justify-content:center; border:none; background:transparent; cursor:pointer; }
+  .hamburger span{ width:20px; height:2px; background:var(--ink); border-radius:2px; transition:.3s; }
+  .hamburger.active span:nth-child(1){ transform: translateY(7px) rotate(45deg); }
+  .hamburger.active span:nth-child(2){ opacity:0; }
+  .hamburger.active span:nth-child(3){ transform: translateY(-7px) rotate(-45deg); }
+  .mobile-menu{ display:none; flex-direction:column; background:#fff; border-top:1px solid var(--line); max-height:0; overflow:hidden; transition: max-height 0.3s ease; }
+  .mobile-menu.open{ max-height:340px; }
+  .mobile-menu a{ padding:14px 32px; border-bottom:1px solid var(--line); font-family:'Poppins',sans-serif; font-weight:600; font-size:0.9rem; }
+  @media (max-width:900px){
+    .nav-links{ display:none; }
+    .nav-cta .btn-outline{ display:none; }
+    .hamburger{ display:flex; }
+    .mobile-menu{ display:flex; }
+  }
+
+  /* ---------- hero ---------- */
+  .hero-section{ background: linear-gradient(180deg, var(--bg-tint-soft) 0%, #ffffff 100%); padding:64px 0 0; overflow:hidden; }
+  .hero{ display:grid; grid-template-columns: 1fr 1fr; gap:50px; align-items:center; padding-bottom:60px; }
+  .hero h1{ font-size: clamp(2.2rem, 4.4vw, 3.6rem); line-height:1.12; margin-bottom:22px; font-weight:700; }
+  .hero h1 span{ color: var(--blue); }
+  .hero p{ font-size:1.08rem; line-height:1.65; color: var(--ink-soft); max-width:480px; margin-bottom:32px; }
+  .hero-cta{ display:flex; gap:14px; flex-wrap:wrap; margin-bottom:36px; }
+  .trust-row{ display:flex; align-items:center; gap:14px; }
+  .trust-row .avatars{ display:flex; }
+  .trust-row .avatars span{ width:32px; height:32px; border-radius:50%; border:2px solid #fff; margin-left:-10px; display:flex; align-items:center; justify-content:center; font-size:0.7rem; font-weight:700; color:#fff; }
+  .trust-row .avatars span:nth-child(1){ background:var(--blue); margin-left:0; }
+  .trust-row .avatars span:nth-child(2){ background:var(--coral); }
+  .trust-row .avatars span:nth-child(3){ background:var(--gold); }
+  .trust-row .avatars span:nth-child(4){ background:var(--green); }
+  .trust-row p{ font-size:0.84rem; color: var(--ink-soft); font-weight:600; margin:0; }
+
+  .hero-visual{ position:relative; }
+  .hero-card{ background:#fff; border-radius:26px; box-shadow: var(--shadow-md); padding:10px; }
+  .hero-card .screen{ background: linear-gradient(150deg,#2b2860,#3b386c); border-radius:20px; aspect-ratio:4/3.2; position:relative; overflow:hidden; }
+  #hero-canvas{ width:100%; height:100%; display:block; touch-action:none; }
+  .float-tag{ position:absolute; background:#fff; border-radius:14px; padding:12px 16px; box-shadow: var(--shadow-md); display:flex; align-items:center; gap:10px; font-family:'Poppins',sans-serif; font-weight:600; font-size:0.78rem; }
+  .float-tag.tag1{ top:-16px; left:-16px; }
+  .float-tag.tag2{ bottom:-14px; right:-14px; }
+  .float-tag .pulse{ width:8px; height:8px; border-radius:50%; background: var(--green); box-shadow:0 0 0 0 rgba(47,174,122,0.5); animation: pulse 1.8s infinite; }
+  @keyframes pulse{ 0%{box-shadow:0 0 0 0 rgba(47,174,122,0.5);} 70%{box-shadow:0 0 0 8px rgba(47,174,122,0);} 100%{box-shadow:0 0 0 0 rgba(47,174,122,0);} }
+
+  @media (max-width:900px){
+    .hero{ grid-template-columns:1fr; padding-bottom:40px; }
+    .hero p{ max-width:100%; }
+    .hero-visual{ order:-1; max-width:420px; margin:0 auto; }
+  }
+  @media (max-width:480px){
+    .hero-cta{ flex-direction:column; }
+    .hero-cta .btn{ width:100%; }
+  }
+
+  /* ---------- shared section ---------- */
+  section{ padding:88px 0; }
+  .section-head{ max-width:640px; margin:0 auto 52px; text-align:center; }
+  .section-head h2{ font-size: clamp(1.8rem, 3.2vw, 2.6rem); line-height:1.18; }
+  .section-head p{ margin-top:16px; color: var(--ink-soft); font-size:1.02rem; line-height:1.6; }
+  @media (max-width:600px){ section{ padding:56px 0; } .wrap{ padding:0 20px; } }
+
+  /* ---------- problem section ---------- */
+  .problem-section{ background: var(--bg-tint-soft); }
+  .problem-grid{ display:grid; grid-template-columns: repeat(4,1fr); gap:22px; }
+  .problem-card{ background:#fff; border-radius:18px; padding:28px 24px; box-shadow: var(--shadow-sm); }
+  .problem-card .num{ font-family:'Poppins',sans-serif; font-weight:800; font-size:1.6rem; color: var(--coral); margin-bottom:14px; display:block; }
+  .problem-card h3{ font-size:1.05rem; margin-bottom:10px; }
+  .problem-card p{ color: var(--ink-soft); font-size:0.9rem; line-height:1.55; }
+  @media (max-width:900px){ .problem-grid{ grid-template-columns:1fr 1fr; } }
+  @media (max-width:560px){ .problem-grid{ grid-template-columns:1fr; } }
+
+  /* ---------- ecosystem ---------- */
+  .ecosystem-grid{ display:grid; grid-template-columns: repeat(4,1fr); gap:22px; }
+  .eco-card{ border:1px solid var(--line); border-radius:20px; padding:32px 24px; transition: box-shadow 0.25s ease, transform 0.25s ease; }
+  .eco-card:hover{ box-shadow: var(--shadow-md); transform: translateY(-6px); }
+  .eco-card .icon{ width:52px; height:52px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:1.4rem; margin-bottom:20px; }
+  .eco-card:nth-child(1) .icon{ background:#E9F3FC; }
+  .eco-card:nth-child(2) .icon{ background:#FDECE4; }
+  .eco-card:nth-child(3) .icon{ background:#FCF2E1; }
+  .eco-card:nth-child(4) .icon{ background:#E5F6EE; }
+  .eco-card h3{ font-size:1.1rem; margin-bottom:8px; }
+  .eco-card p{ color: var(--ink-soft); font-size:0.9rem; line-height:1.55; }
+  @media (max-width:900px){ .ecosystem-grid{ grid-template-columns:1fr 1fr; } }
+  @media (max-width:560px){ .ecosystem-grid{ grid-template-columns:1fr; } }
+
+  /* ---------- promises / stats highlight ---------- */
+  .promise-section{ background: var(--ink); color:#fff; border-radius:32px; margin:0 32px; padding:64px 48px; }
+  .promise-grid{ display:grid; grid-template-columns: repeat(3,1fr); gap:28px; margin-top:40px; }
+  .promise-card{ background: rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:18px; padding:28px 24px; }
+  .promise-card .tag{ font-family:'Poppins',sans-serif; font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color: var(--gold); margin-bottom:14px; display:block; }
+  .promise-card .big{ font-family:'Poppins',sans-serif; font-weight:800; font-size:2rem; margin-bottom:10px; }
+  .promise-card p{ color: rgba(255,255,255,0.7); font-size:0.9rem; line-height:1.55; }
+  .promise-section .section-head h2{ color:#fff; }
+  .promise-section .section-head p{ color: rgba(255,255,255,0.65); }
+  @media (max-width:900px){ .promise-grid{ grid-template-columns:1fr; } .promise-section{ margin:0 16px; padding:48px 26px; border-radius:24px; } }
+
+  /* ---------- process (structured week) ---------- */
+  .process-wrap{ background:#fff; }
+  .process-steps{ display:grid; grid-template-columns: repeat(3,1fr); gap:0; position:relative; margin-top:20px; }
+  .process-steps::before{ content:''; position:absolute; top:28px; left:8%; right:8%; height:2px; background: repeating-linear-gradient(to right, var(--line) 0 10px, transparent 10px 20px); }
+  .step{ position:relative; padding:0 22px; }
+  .step .marker{ width:56px; height:56px; border-radius:16px; background: var(--bg-tint-soft); border:2px solid var(--blue); display:flex; align-items:center; justify-content:center; font-family:'Poppins',sans-serif; font-weight:800; font-size:1.3rem; color: var(--blue); margin-bottom:20px; }
+  .step:nth-child(2) .marker{ background: var(--coral); border-color:var(--coral); color:#fff; }
+  .step:nth-child(3) .marker{ background: var(--gold); border-color:var(--gold); color:var(--ink); }
+  .step .tagline{ font-family:'Poppins',sans-serif; font-weight:700; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.08em; color: var(--ink-soft); margin-bottom:8px; }
+  .step h3{ font-size:1.15rem; margin-bottom:10px; }
+  .step p{ color: var(--ink-soft); font-size:0.92rem; line-height:1.6; }
+  @media (max-width:860px){ .process-steps{ grid-template-columns:1fr; gap:32px; } .process-steps::before{ display:none; } .step{ padding:0; } }
+
+  /* ---------- stats numbers ---------- */
+  .stats-strip{ background: var(--bg-tint-soft); }
+  .stats-grid{ display:grid; grid-template-columns: repeat(3,1fr); gap:24px; text-align:center; }
+  .stat-item .big{ font-family:'Poppins',sans-serif; font-weight:800; font-size: clamp(2rem,4vw,2.8rem); color: var(--ink); }
+  .stat-item .label{ color: var(--ink-soft); font-size:0.92rem; margin-top:8px; }
+  @media (max-width:700px){ .stats-grid{ grid-template-columns:1fr; gap:32px; } }
+
+  /* ---------- testimonials ---------- */
+  .testi-scroll{ display:flex; gap:20px; overflow-x:auto; padding:8px 4px 20px; scrollbar-width:thin; }
+  .testi-card{ min-width:280px; background:#fff; border:1px solid var(--line); border-radius:18px; padding:24px; box-shadow: var(--shadow-sm); flex-shrink:0; }
+  .testi-card p{ font-size:0.92rem; line-height:1.6; color: var(--ink); margin-bottom:16px; }
+  .testi-card .who{ display:flex; align-items:center; gap:10px; }
+  .testi-card .avatar{ width:34px; height:34px; border-radius:50%; background: var(--blue); color:#fff; display:flex; align-items:center; justify-content:center; font-family:'Poppins',sans-serif; font-weight:700; font-size:0.8rem; }
+  .testi-card .name{ font-weight:600; font-size:0.85rem; }
+  .testi-card .role{ font-size:0.76rem; color: var(--ink-soft); }
+
+  /* ---------- FAQ ---------- */
+  .faq-list{ max-width:760px; margin:0 auto; }
+  .faq-item{ border-bottom:1px solid var(--line); }
+  .faq-q{ width:100%; text-align:left; background:none; border:none; padding:22px 4px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; font-family:'Poppins',sans-serif; font-weight:600; font-size:1rem; color: var(--ink); }
+  .faq-q .plus{ font-size:1.4rem; color: var(--blue); transition: transform 0.25s ease; flex-shrink:0; margin-left:16px; }
+  .faq-item.open .plus{ transform: rotate(45deg); }
+  .faq-a{ max-height:0; overflow:hidden; transition: max-height 0.3s ease; }
+  .faq-a p{ padding:0 4px 22px; color: var(--ink-soft); font-size:0.94rem; line-height:1.6; }
+
+  /* ---------- final CTA ---------- */
+  .cta-final{ background: linear-gradient(135deg, var(--blue) 0%, var(--ink) 100%); border-radius:32px; margin:0 32px; padding:64px 48px; color:#fff; display:grid; grid-template-columns: 1.1fr 0.9fr; gap:40px; align-items:center; }
+  .cta-final h2{ color:#fff; font-size: clamp(1.8rem,3.4vw,2.6rem); margin-bottom:16px; }
+  .cta-final p{ color: rgba(255,255,255,0.8); font-size:1rem; margin-bottom:0; }
+  .cta-form{ background:#fff; border-radius:18px; padding:26px; box-shadow: var(--shadow-md); }
+  .cta-form .field{ margin-bottom:14px; }
+  .cta-form label{ font-size:0.78rem; font-weight:600; color: var(--ink-soft); display:block; margin-bottom:6px; }
+  .cta-form input, .cta-form select{ width:100%; padding:12px 14px; border-radius:10px; border:1.5px solid var(--line); font-family:'Inter',sans-serif; font-size:0.9rem; color: var(--ink); background:#fafbfc; }
+  .cta-form input:focus, .cta-form select:focus{ outline:none; border-color: var(--blue); }
+  .cta-form .btn{ width:100%; margin-top:6px; }
+  @media (max-width:900px){ .cta-final{ grid-template-columns:1fr; margin:0 16px; padding:44px 24px; border-radius:24px; } }
+
+  /* ---------- footer ---------- */
+  footer{ padding:60px 0 30px; background:#fff; border-top:1px solid var(--line); }
+  .footer-top{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:40px; padding-bottom:40px; }
+  .footer-brand p{ color: var(--ink-soft); max-width:280px; margin-top:14px; font-size:0.9rem; line-height:1.6; }
+  .footer-cols{ display:flex; gap:56px; flex-wrap:wrap; }
+  .footer-col h4{ font-family:'Poppins',sans-serif; font-size:0.8rem; margin-bottom:14px; letter-spacing:0.04em; color: var(--ink-soft); }
+  .footer-col a{ display:block; color: var(--ink); font-size:0.88rem; margin-bottom:10px; }
+  .footer-col a:hover{ color: var(--blue); }
+  .footer-bottom{ border-top:1px solid var(--line); padding-top:24px; display:flex; justify-content:space-between; font-size:0.8rem; color: var(--ink-soft); flex-wrap:wrap; gap:10px; }
+  @media (max-width:600px){ .footer-cols{ gap:30px; } .footer-bottom{ flex-direction:column; } }
+
+  .reveal{ opacity:0; transform: translateY(22px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+  @media (prefers-reduced-motion: reduce){ *{ animation:none !important; transition:none !important; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <nav>
+      <div class="logo"><span class="dot"></span>NIVEDU</div>
+      <div class="nav-links">
+        <a href="#problem">Why NIVEDU</a>
+        <a href="#ecosystem">Products</a>
+        <a href="#process">How it works</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <div class="nav-cta">
+        <a href="#" class="btn btn-outline">Login</a>
+        <a href="#cta" class="btn btn-primary">Get Started</a>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </nav>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#problem">Why NIVEDU</a>
+    <a href="#ecosystem">Products</a>
+    <a href="#process">How it works</a>
+    <a href="#faq">FAQ</a>
+    <a href="#cta">Login</a>
+  </div>
+</header>
+
+<main>
+  <section class="hero-section">
+    <div class="wrap hero">
+      <div class="hero-copy">
+        <div class="eyebrow">NIVTECH Institute for Visual Education</div>
+        <h1>See your child <span>understand</span>, from the very first lesson.</h1>
+        <p>NIVEDU turns flat textbook concepts into interactive 3D lessons — combining visual learning with structured practice, so students don't just memorise, they understand.</p>
+        <div class="hero-cta">
+          <a href="#cta" class="btn btn-primary">Schedule Your Assessment →</a>
+          <a href="#process" class="btn btn-outline">See how it works</a>
+        </div>
+        <div class="trust-row">
+          <div class="avatars"><span>A</span><span>R</span><span>P</span><span>S</span></div>
+          <p>Trusted by classrooms across Bhubaneswar & beyond</p>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-card">
+          <div class="screen"><canvas id="hero-canvas"></canvas></div>
+        </div>
+        <div class="float-tag tag1"><span class="pulse"></span> Live 3D lesson</div>
+        <div class="float-tag tag2">📈 Progress +32% this term</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="problem" class="problem-section">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow" style="justify-content:center;">The Problem</div>
+        <h2>What's wrong with traditional teaching tools?</h2>
+        <p>Static textbooks and flat slides ask students to imagine what they can't see — and most give up before they understand.</p>
+      </div>
+      <div class="problem-grid">
+        <div class="problem-card reveal"><span class="num">01</span><h3>No Visual Proof</h3><p>A diagram on a page can't rotate, animate, or show how a process actually unfolds.</p></div>
+        <div class="problem-card reveal"><span class="num">02</span><h3>One-Size Lessons</h3><p>Every student gets the same static explanation, no matter how they learn best.</p></div>
+        <div class="problem-card reveal"><span class="num">03</span><h3>No Immediate Feedback</h3><p>Students get stuck at home with nobody to show them why an answer is wrong.</p></div>
+        <div class="problem-card reveal"><span class="num">04</span><h3>Low Engagement</h3><p>Flat content loses attention fast — and lost attention means lost learning.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="ecosystem">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow" style="justify-content:center;">The Ecosystem</div>
+        <h2>How does NIVEDU help students learn faster?</h2>
+        <p>Four tools, one continuous loop — each one feeds into the next to keep learning moving forward.</p>
+      </div>
+      <div class="ecosystem-grid">
+        <div class="eco-card reveal"><div class="icon">🧊</div><h3>NIVEDU Visualize</h3><p>Interactive 3D lessons that turn textbook diagrams into models students can rotate and explore.</p></div>
+        <div class="eco-card reveal"><div class="icon">📝</div><h3>NIVEDU Practice</h3><p>Personalised worksheets targeting exactly the topics and gaps each student needs to work on.</p></div>
+        <div class="eco-card reveal"><div class="icon">💬</div><h3>NIVEDU Ask</h3><p>On-demand doubt support, so a stuck moment at home never turns into a lost week.</p></div>
+        <div class="eco-card reveal"><div class="icon">📊</div><h3>Teacher Dashboard</h3><p>Real-time tracking so teachers and parents always know exactly where a student stands.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="promise-section reveal">
+      <div class="section-head">
+        <div class="eyebrow" style="justify-content:center;">Visible Impact</div>
+        <h2>Three promises. Delivered together.</h2>
+        <p>Not just another app — a structural change in how a concept gets understood.</p>
+      </div>
+      <div class="promise-grid">
+        <div class="promise-card"><span class="tag">Results</span><div class="big">2x Retention</div><p>Students recall interactive 3D lessons far longer than flat textbook diagrams.</p></div>
+        <div class="promise-card"><span class="tag">Speed</span><div class="big">20–30 min</div><p>A short diagnostic identifies gaps and shows a progress signal within two lessons.</p></div>
+        <div class="promise-card"><span class="tag">Visibility</span><div class="big">Every Lesson</div><p>Real-time tracking with monthly reports — no surprises at exam time.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="process" class="process-wrap">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow" style="justify-content:center;">How a lesson comes alive</div>
+        <h2>Think. Visualize. Discover.</h2>
+        <p>Every NIVEDU lesson follows the same structured loop, built to move understanding forward every single week.</p>
+      </div>
+      <div class="process-steps">
+        <div class="step reveal">
+          <div class="marker">1</div>
+          <div class="tagline">New Topic</div>
+          <h3>Think</h3>
+          <p>A teacher picks a topic — projectile motion, the human heart, a chemical reaction — and NIVEDU sets the stage.</p>
+        </div>
+        <div class="step reveal">
+          <div class="marker">2</div>
+          <div class="tagline">Interactive Lesson</div>
+          <h3>Visualize</h3>
+          <p>The concept renders as an interactive 3D scene students can rotate, pause, and explore at their own pace.</p>
+        </div>
+        <div class="step reveal">
+          <div class="marker">3</div>
+          <div class="tagline">Guided Practice</div>
+          <h3>Discover</h3>
+          <p>Students test ideas by changing variables and watching outcomes shift — learning by doing, not just reading.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats-strip">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow" style="justify-content:center;">The Proof</div>
+        <h2>The results, in numbers.</h2>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-item reveal"><div class="big">40+</div><div class="label">Interactive 3D lessons built</div></div>
+        <div class="stat-item reveal"><div class="big">12</div><div class="label">Subjects covered end to end</div></div>
+        <div class="stat-item reveal"><div class="big">100%</div><div class="label">Curriculum aligned content</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow" style="justify-content:center;">What Teachers Say</div>
+        <h2>Trusted in real classrooms.</h2>
+      </div>
+      <div class="testi-scroll reveal">
+        <div class="testi-card"><p>"My students finally understand projectile motion — they can rotate it and see it for themselves."</p><div class="who"><div class="avatar">S</div><div><div class="name">Smita R.</div><div class="role">Physics Teacher</div></div></div></div>
+        <div class="testi-card"><p>"The 3D heart model made a hard biology topic click in one class instead of three."</p><div class="who"><div class="avatar">A</div><div><div class="name">Anil K.</div><div class="role">Biology Teacher</div></div></div></div>
+        <div class="testi-card"><p>"Engagement went up immediately. Kids ask to use NIVEDU instead of the textbook."</p><div class="who"><div class="avatar">P</div><div><div class="name">Priya M.</div><div class="role">School Coordinator</div></div></div></div>
+        <div class="testi-card"><p>"Setup took minutes, no extra hardware. It just runs in the browser."</p><div class="who"><div class="avatar">R</div><div><div class="name">Rakesh D.</div><div class="role">Principal</div></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow" style="justify-content:center;">Questions</div>
+        <h2>Questions parents & teachers ask.</h2>
+      </div>
+      <div class="faq-list reveal">
+        <div class="faq-item">
+          <button class="faq-q">What is NIVEDU?<span class="plus">+</span></button>
+          <div class="faq-a"><p>NIVEDU is a visual learning platform that turns textbook concepts into interactive 3D lessons, paired with personalised practice and teacher tracking.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">Does it need extra hardware or apps?<span class="plus">+</span></button>
+          <div class="faq-a"><p>No. NIVEDU runs entirely in the browser, so any classroom with a screen becomes a lab or interactive workspace instantly.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">Which subjects and grades are covered?<span class="plus">+</span></button>
+          <div class="faq-a"><p>NIVEDU currently covers Physics, Biology, and Chemistry topics for middle and high school students, with new lessons added regularly.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">How do teachers track progress?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Every lesson and practice attempt is logged to a teacher dashboard with real-time engagement data and monthly summaries.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">Can I try NIVEDU before committing?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Yes — book a free assessment and demo lesson using the form below, no credit card required.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="cta">
+    <div class="wrap">
+      <div class="cta-final reveal">
+        <div>
+          <div class="eyebrow" style="color:var(--gold);">Ready when you are</div>
+          <h2>Your child's understanding starts here.</h2>
+          <p>Book a complimentary assessment. See a live 3D lesson in your child's next class.</p>
+        </div>
+        <div class="cta-form">
+          <div class="field"><label>Parent Name</label><input type="text" placeholder="Your name"></div>
+          <div class="field"><label>Phone Number</label><input type="tel" placeholder="+91"></div>
+          <div class="field"><label>Child's Grade</label>
+            <select><option>Grade 6</option><option>Grade 7</option><option>Grade 8</option><option>Grade 9</option><option>Grade 10</option></select>
+          </div>
+          <button class="btn btn-primary" style="width:100%;">Schedule Assessment</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="logo"><span class="dot"></span>NIVEDU</div>
+        <p>NIVTECH Institute for Visual Education and Digital Unity. Building the visual future of learning, from Bhubaneswar to every classroom.</p>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col"><h4>PRODUCT</h4><a href="#ecosystem">Visualize</a><a href="#ecosystem">Practice</a><a href="#ecosystem">Ask</a></div>
+        <div class="footer-col"><h4>COMPANY</h4><a href="#">About NIVTECH</a><a href="#">Careers</a><a href="#">Contact</a></div>
+        <div class="footer-col"><h4>CONNECT</h4><a href="#">Instagram</a><a href="#">LinkedIn</a><a href="#">YouTube</a></div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 NIVEDU · NIVTECH Solutions Pvt. Ltd.</span>
+      <span>Made with care in Bhubaneswar, Odisha</span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', ()=>{ hamburger.classList.toggle('active'); mobileMenu.classList.toggle('open'); });
+  mobileMenu.querySelectorAll('a').forEach(a=> a.addEventListener('click', ()=>{ hamburger.classList.remove('active'); mobileMenu.classList.remove('open'); }));
+
+  document.querySelectorAll('.faq-q').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const item = btn.parentElement;
+      const answer = item.querySelector('.faq-a');
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(o=>{ o.classList.remove('open'); o.querySelector('.faq-a').style.maxHeight = null; });
+      if(!isOpen){ item.classList.add('open'); answer.style.maxHeight = answer.scrollHeight + 'px'; }
+    });
+  });
+
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el=> io.observe(el));
+
+  (function heroScene(){
+    const canvas = document.getElementById('hero-canvas');
+    const container = canvas.parentElement;
+    const isSmall = window.innerWidth < 640;
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+    camera.position.set(0, 0, 6.2);
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha:true, antialias:true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
+
+    const blue = 0x8fd0f0, coral = 0xf0693a, gold = 0xf0a93a;
+    scene.add(new THREE.AmbientLight(0xffffff, 0.8));
+    const key = new THREE.PointLight(0xffffff, 1.1); key.position.set(4,5,6); scene.add(key);
+    const rim = new THREE.PointLight(gold, 1.1); rim.position.set(-4,-3,3); scene.add(rim);
+
+    const group = new THREE.Group(); scene.add(group);
+    const coreGeo = new THREE.IcosahedronGeometry(1.4, 1);
+    const coreMat = new THREE.MeshPhongMaterial({ color: blue, transparent:true, opacity:0.85, shininess:90, specular:0xffffff });
+    const core = new THREE.Mesh(coreGeo, coreMat); group.add(core);
+    const edges = new THREE.EdgesGeometry(coreGeo);
+    core.add(new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: coral, transparent:true, opacity:0.9 })));
+
+    const ringGeo = new THREE.TorusGeometry(2.2, 0.025, 8, 80);
+    const ring1 = new THREE.Mesh(ringGeo, new THREE.MeshBasicMaterial({ color: gold, transparent:true, opacity:0.7 }));
+    ring1.rotation.x = Math.PI/2.4; group.add(ring1);
+    const ring2 = new THREE.Mesh(ringGeo, new THREE.MeshBasicMaterial({ color: 0xffffff, transparent:true, opacity:0.3 }));
+    ring2.rotation.x = Math.PI/1.7; ring2.rotation.y = Math.PI/4; ring2.scale.setScalar(0.7); group.add(ring2);
+
+    const particleCount = isSmall ? 50 : 110;
+    const positions = new Float32Array(particleCount*3);
+    for(let i=0;i<particleCount;i++){
+      const r = 2.8 + Math.random()*1.2, theta = Math.random()*Math.PI*2, phi = Math.acos((Math.random()*2)-1);
+      positions[i*3] = r*Math.sin(phi)*Math.cos(theta);
+      positions[i*3+1] = r*Math.sin(phi)*Math.sin(theta);
+      positions[i*3+2] = r*Math.cos(phi);
+    }
+    const pGeo = new THREE.BufferGeometry(); pGeo.setAttribute('position', new THREE.BufferAttribute(positions,3));
+    const particles = new THREE.Points(pGeo, new THREE.PointsMaterial({ color: gold, size:0.045, transparent:true, opacity:0.85 }));
+    scene.add(particles);
+
+    function resize(){ const w=container.clientWidth,h=container.clientHeight; renderer.setSize(w,h,false); camera.aspect=w/h; camera.updateProjectionMatrix(); }
+    window.addEventListener('resize', resize); resize();
+
+    let mouseX=0, mouseY=0;
+    container.addEventListener('mousemove', (e)=>{
+      const rect = container.getBoundingClientRect();
+      mouseX = ((e.clientX-rect.left)/rect.width - 0.5)*2;
+      mouseY = ((e.clientY-rect.top)/rect.height - 0.5)*2;
+    });
+
+    const clock = new THREE.Clock();
+    function animate(){
+      requestAnimationFrame(animate);
+      const t = clock.getElapsedTime();
+      group.rotation.y = t*0.25 + mouseX*0.3;
+      group.rotation.x = Math.sin(t*0.3)*0.15 + mouseY*0.2;
+      particles.rotation.y = -t*0.05;
+      ring2.rotation.z = t*0.4;
+      renderer.render(scene, camera);
+    }
+    animate();
+  })();
+</script>
+
+</body>
+</html>
