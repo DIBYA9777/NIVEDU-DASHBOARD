@@ -152,6 +152,24 @@
   @media (max-width:900px){ .ecosystem-grid{ grid-template-columns:1fr 1fr; } }
   @media (max-width:560px){ .ecosystem-grid{ grid-template-columns:1fr; } }
 
+  /* ---------- framework (5-stage pipeline) ---------- */
+  .framework-section{ background: var(--bg-tint-soft); }
+  .framework-flow{ display:flex; align-items:stretch; gap:0; margin-top:10px; }
+  .framework-card{ flex:1; background:#fff; border-radius:18px; padding:26px 20px; box-shadow: var(--shadow-sm); position:relative; }
+  .framework-card .stage-num{ width:34px; height:34px; border-radius:10px; background: var(--bg-tint-soft); color: var(--blue); font-family:'Poppins',sans-serif; font-weight:800; font-size:0.95rem; display:flex; align-items:center; justify-content:center; margin-bottom:16px; }
+  .framework-card:nth-child(3) .stage-num{ background:#FDECE4; color: var(--coral); }
+  .framework-card:nth-child(5) .stage-num{ background:#FDECE4; color: var(--coral); }
+  .framework-card:nth-child(7) .stage-num{ background:#FCF2E1; color:#c17f10; }
+  .framework-card:nth-child(9) .stage-num{ background:#E5F6EE; color: var(--green); }
+  .framework-card h3{ font-size:1rem; margin-bottom:8px; }
+  .framework-card p{ color: var(--ink-soft); font-size:0.84rem; line-height:1.55; }
+  .framework-arrow{ display:flex; align-items:center; justify-content:center; width:34px; flex-shrink:0; color: var(--blue); font-size:1.3rem; }
+  .framework-note{ text-align:center; max-width:680px; margin:44px auto 0; color: var(--ink-soft); font-size:0.98rem; line-height:1.65; }
+  @media (max-width:1000px){
+    .framework-flow{ flex-direction:column; gap:14px; }
+    .framework-arrow{ width:auto; height:24px; transform:rotate(90deg); margin:0 auto; }
+  }
+
   /* ---------- promises / stats highlight ---------- */
   .promise-section{ background: var(--ink); color:#fff; border-radius:32px; margin:0 32px; padding:64px 48px; }
   .promise-grid{ display:grid; grid-template-columns: repeat(3,1fr); gap:28px; margin-top:40px; }
@@ -312,6 +330,28 @@
         <div class="eco-card reveal"><div class="icon">💬</div><h3>NIVEDU Ask</h3><p>On-demand doubt support, so a stuck moment at home never turns into a lost week.</p></div>
         <div class="eco-card reveal"><div class="icon">📊</div><h3>Teacher Dashboard</h3><p>Real-time tracking so teachers and parents always know exactly where a student stands.</p></div>
       </div>
+    </div>
+  </section>
+
+  <section class="framework-section">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow" style="justify-content:center;">Our Learning Framework</div>
+        <h2>Every feature, one purpose.</h2>
+        <p>NIVEDU isn't just visuals for the sake of visuals — every feature we build aligns to one of five stages of real learning.</p>
+      </div>
+      <div class="framework-flow reveal">
+        <div class="framework-card"><div class="stage-num">01</div><h3>Curiosity</h3><p>Students want to learn.</p></div>
+        <div class="framework-arrow">→</div>
+        <div class="framework-card"><div class="stage-num">02</div><h3>Visualization</h3><p>Students understand.</p></div>
+        <div class="framework-arrow">→</div>
+        <div class="framework-card"><div class="stage-num">03</div><h3>Participation</h3><p>Students stay engaged.</p></div>
+        <div class="framework-arrow">→</div>
+        <div class="framework-card"><div class="stage-num">04</div><h3>Misconception Correction</h3><p>Students build correct mental models.</p></div>
+        <div class="framework-arrow">→</div>
+        <div class="framework-card"><div class="stage-num">05</div><h3>Assessment</h3><p>Teachers know whether learning actually happened.</p></div>
+      </div>
+      <p class="framework-note reveal">If every feature we add strengthens one of these five stages, NIVEDU stays coherent, innovative, and genuinely useful for both teachers and students — not just another AI education app.</p>
     </div>
   </section>
 
